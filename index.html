@@ -11,13 +11,9 @@
 
     <header class="header">
         <div class="logo">VENT<span>SHOP</span></div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <div id="user-info" class="auth-badge">Гість</div>
-            <button class="btn-sm" id="auth-btn" onclick="openAuthModal()">Вхід</button>
-            <div class="cart-btn-wrapper" onclick="toggleCart()">
-                <span style="font-size: 12px;">КОШИК</span>
-                <span class="cart-count" id="cart-count">0</span>
-            </div>
+        <div class="cart-btn-wrapper" onclick="toggleCart()">
+            <span style="font-size: 12px; letter-spacing: 1px;">КОШИК</span>
+            <span class="cart-count" id="cart-count">0</span>
         </div>
     </header>
 
@@ -25,27 +21,31 @@
         <div class="hero-bg-graphic"></div>
         <div class="hero-badge">ELEVATE THE AIR</div>
         <h1>VENTSHOP</h1>
-        <p>Преміальні кліматичні системи безкомпромісної якості.</p>
+        <p>Преміальні акустичні та кліматичні системи вентиляції безкомпромісної якості.</p>
+        <a href="#catalog" class="btn-primary">Колекція</a>
     </section>
 
-    <main class="main-content">
+    <section class="about-section">
+        <h2>ПРО СИСТЕМИ</h2>
+        <p class="about-subtitle">Чистота повітря у найчистішому вигляді</p>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>АКУСТИЧНА ТИША</h3>
+                <p>Інноваційна конструкція корпусу забезпечує безшумну роботу навіть на максимальній потужності.</p>
+            </div>
+            <div class="about-card">
+                <h3>ЕКОСИСТЕМА 2026</h3>
+                <p>Інтелектуальні датчики якості повітря з автоматичним регулюванням мікроклімату.</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- Панель Адміністратора / Власника (показується тільки якщо role === 'admin') -->
-        <section id="admin-section" class="admin-panel" style="display: none;">
-            <h2>⚡ ПАНЕЛЬ ВЛАСНИКА: Додати нове оголошення</h2>
-            <form class="admin-form" onsubmit="handleAddProduct(event)">
-                <input type="text" id="new-name" class="admin-input" placeholder="Назва моделі" required>
-                <input type="text" id="new-category" class="admin-input" placeholder="Категорія (Вентилятори / Рекуператори)" required>
-                <input type="number" id="new-price" class="admin-input" placeholder="Ціна (грн)" required>
-                <textarea id="new-desc" class="admin-input" placeholder="Опис товару" rows="2"></textarea>
-                <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Опублікувати товар</button>
-            </form>
-        </section>
-
+    <main class="main-content" id="catalog">
         <section class="controls-section">
             <div class="search-box">
                 <input type="text" id="search-input" placeholder="Пошук по моделям..." oninput="filterProducts()">
             </div>
+
             <div class="categories">
                 <button class="cat-btn active" onclick="filterCategory('all', this)">Все</button>
                 <button class="cat-btn" onclick="filterCategory('Вентилятори', this)">Вентилятори</button>
@@ -58,77 +58,85 @@
         </section>
     </main>
 
-    <!-- Модалка Авторизації / Реєстрації -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeAllModals()"></div>
 
-    <div class="cart-modal" id="auth-modal" style="max-width: 400px; margin: 0 auto;">
-        <div class="cart-header">
-            <h3>Авторизація</h3>
-            <button class="close-cart" onclick="closeAllModals()">✕</button>
-        </div>
-        <form onsubmit="handleAuth(event)" style="display: flex; flex-direction: column; gap: 14px;">
-            <input type="text" id="auth-user" class="admin-input" placeholder="Логін (напр. admin)" required>
-            <input type="password" id="auth-pass" class="admin-input" placeholder="Пароль (напр. adminpassword)" required>
-            <button type="submit" class="btn-checkout">Увійти / Зареєструватись</button>
-        </form>
-        <p style="font-size: 11px; color: #555; margin-top: 15px; text-align: center;">
-            💡 Логін власника: <b>admin</b> | Пароль: <b>adminpassword</b>
-        </p>
-    </div>
-
-    <!-- Модалка Кошика -->
     <div class="cart-modal" id="cart-modal">
         <div class="cart-header">
             <h3>Ваш кошик</h3>
             <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
-        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-items" id="cart-items">
+            <p style="color: #555555; font-size: 12px; text-align: center;">Кошик порожній</p>
+        </div>
         <div class="cart-footer">
             <div class="cart-total">Разом: <span id="cart-total-price">0</span> грн</div>
-            <button class="btn-checkout" onclick="checkout()">Оформити замовлення</button>
+            <button class="btn-checkout" onclick="checkout()">Замовити</button>
         </div>
     </div>
 
-    <script>
-        let allProducts = [];
-        let cart = [];
-        let currentUser = null;
-        let currentCategory = 'all';
+    <div class="alert-modal" id="alert-modal">
+        <h4>ЗАМОВЛЕННЯ ПРИЙНЯТО</h4>
+        <p id="alert-message">Дякуємо! Наш менеджер зв'яжеться з вами найближчим часом.</p>
+        <button class="btn-alert-close" onclick="closeAlert()">Закрити</button>
+    </div>
 
-        // Завантаження товарів із сервера
-        async function loadProducts() {
-            const res = await fetch('/api/products');
-            allProducts = await res.json();
+    <footer class="footer">
+        <div class="logo" style="font-size: 14px; margin-bottom: 8px;">VENT<span>SHOP</span></div>
+        <p>© 2026 VENTSHOP COLLECTION. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // Вбудовані товари (без потреби у зовнішніх файлах JSON)
+        let allProducts = [
+            {
+                id: 1,
+                name: "VentShop Silent 100 Pro",
+                category: "Вентилятори",
+                price: 1450,
+                description: "Ультра-тихий безшумний витяжний вентилятор із захистом від вологи."
+            },
+            {
+                id: 2,
+                name: "Рекуператор SmartAir Eco",
+                category: "Рекуператори",
+                price: 4200,
+                description: "Припливно-витяжна установка з керамічним теплообмінником."
+            }
+        ];
+
+        let currentCategory = 'all';
+        let cart = [];
+
+        // Одразу рендеримо товари при завантаженні
+        document.addEventListener('DOMContentLoaded', () => {
             renderProducts(allProducts);
-        }
+        });
 
         function renderProducts(productsList) {
             const container = document.getElementById('products-container');
+            if (!container) return;
             container.innerHTML = '';
 
-            productsList.forEach(product => {
-                const isAdded = cart.some(item => item.id === product.id);
+            if (productsList.length === 0) {
+                container.innerHTML = `<p style="color: #555; text-align: center; padding: 20px;">Моделей не знайдено</p>`;
+                return;
+            }
+
+            productsList.forEach((productItem) => {
+                const isAdded = cart.some(item => item.id === productItem.id);
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 
-                // Якщо залогинені як admin — показуємо форму зміни ціни та кнопка видалення
-                const adminControls = currentUser?.role === 'admin' ? `
-                    <div class="edit-price-box">
-                        <input type="number" class="edit-price-input" id="price-input-${product.id}" value="${product.price}">
-                        <button class="btn-sm" onclick="updatePrice(${product.id})">Зберегти ціну</button>
-                        <button class="btn-sm" style="color: #ff4444;" onclick="deleteProduct(${product.id})">✕</button>
-                    </div>
-                ` : '';
-
                 card.innerHTML = `
-                    <div class="product-placeholder"><div class="placeholder-shape"></div></div>
+                    <div class="product-placeholder">
+                        <div class="placeholder-shape"></div>
+                    </div>
                     <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-desc">${product.description}</p>
-                        ${adminControls}
+                        <h3>${productItem.name}</h3>
+                        <p class="product-desc">${productItem.description}</p>
                         <div class="product-bottom">
-                            <span class="price">${product.price} <span>ГРН</span></span>
-                            <button class="btn-buy ${isAdded ? 'added' : ''}" onclick="toggleCartItem(${product.id})">
+                            <span class="price">${productItem.price} <span>ГРН</span></span>
+                            <button class="btn-buy ${isAdded ? 'added' : ''}" id="btn-${productItem.id}" onclick="toggleCartItem(${productItem.id})">
                                 ${isAdded ? 'В кошику ✓' : 'Обрати'}
                             </button>
                         </div>
@@ -138,130 +146,123 @@
             });
         }
 
-        // Авторизація
-        async function handleAuth(e) {
-            e.preventDefault();
-            const username = document.getElementById('auth-user').value;
-            const password = document.getElementById('auth-pass').value;
+        function toggleCartItem(productId) {
+            const item = allProducts.find(p => p.id === productId);
+            if (!item) return;
 
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+            const existingIndex = cart.findIndex(p => p.id === productId);
+            const btn = document.getElementById(`btn-${productId}`);
 
-            const data = await res.json();
-            if (data.success) {
-                currentUser = data.user;
-                document.getElementById('user-info').innerText = `${currentUser.username} (${currentUser.role})`;
-                document.getElementById('auth-btn').innerText = 'Вихід';
-                document.getElementById('auth-btn').onclick = logout;
-                
-                if (currentUser.role === 'admin') {
-                    document.getElementById('admin-section').style.display = 'block';
+            if (existingIndex > -1) {
+                cart.splice(existingIndex, 1);
+                if (btn) {
+                    btn.classList.remove('added');
+                    btn.innerText = 'Обрати';
                 }
-                closeAllModals();
-                renderProducts(allProducts);
+            } else {
+                cart.push(item);
+                if (btn) {
+                    btn.classList.add('added');
+                    btn.innerText = 'В кошику ✓';
+                }
             }
-        }
-
-        function logout() {
-            currentUser = null;
-            document.getElementById('user-info').innerText = 'Гість';
-            document.getElementById('auth-btn').innerText = 'Вхід';
-            document.getElementById('auth-btn').onclick = openAuthModal;
-            document.getElementById('admin-section').style.display = 'none';
-            renderProducts(allProducts);
-        }
-
-        // Додавання оголошення (Власник)
-        async function handleAddProduct(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-name').value;
-            const category = document.getElementById('new-category').value;
-            const price = document.getElementById('new-price').value;
-            const description = document.getElementById('new-desc').value;
-
-            const res = await fetch('/api/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, category, price, description })
-            });
-
-            if (res.ok) {
-                e.target.reset();
-                await loadProducts();
-            }
-        }
-
-        // Зміна ціни (Власник)
-        async function updatePrice(id) {
-            const newPrice = document.getElementById(`price-input-${id}`).value;
-            await fetch(`/api/products/${id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ price: newPrice })
-            });
-            await loadProducts();
-        }
-
-        // Видалення товару (Власник)
-        async function deleteProduct(id) {
-            await fetch(`/api/products/${id}`, { method: 'DELETE' });
-            await loadProducts();
-        }
-
-        function toggleCartItem(id) {
-            const item = allProducts.find(p => p.id === id);
-            const idx = cart.findIndex(p => p.id === id);
-            if (idx > -1) cart.splice(idx, 1);
-            else cart.push(item);
             updateCart();
-            renderProducts(allProducts);
+        }
+
+        function filterProducts() {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput ? searchInput.value.toLowerCase() : '';
+            const filtered = allProducts.filter((p) => {
+                const matchesSearch = p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
+                const matchesCat = currentCategory === 'all' || p.category === currentCategory;
+                return matchesSearch && matchesCat;
+            });
+            renderProducts(filtered);
+        }
+
+        function filterCategory(catName, btnElem) {
+            document.querySelectorAll('.cat-btn').forEach((b) => b.classList.remove('active'));
+            if (btnElem) btnElem.classList.add('active');
+            currentCategory = catName;
+            filterProducts();
         }
 
         function updateCart() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const container = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) cartCount.innerText = cart.length.toString();
+
+            const cartItemsContainer = document.getElementById('cart-items');
+            if (!cartItemsContainer) return;
+            
             if (cart.length === 0) {
-                container.innerHTML = '<p style="color:#555; text-align:center;">Кошик порожній</p>';
-                document.getElementById('cart-total-price').innerText = '0';
+                cartItemsContainer.innerHTML = `<p style="color: #555555; font-size: 12px; text-align: center;">Кошик порожній</p>`;
+                const totalElem = document.getElementById('cart-total-price');
+                if (totalElem) totalElem.innerText = '0';
                 return;
             }
-            container.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                total += item.price;
-                container.innerHTML += `<div class="cart-item"><span>${item.name}</span><b>${item.price} грн</b></div>`;
-            });
-            document.getElementById('cart-total-price').innerText = total;
-        }
 
-        function openAuthModal() {
-            document.getElementById('auth-modal').classList.add('active');
-            document.getElementById('modal-overlay').classList.add('active');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            cart.forEach((item) => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <span>${item.name}</span>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <b>${item.price} грн</b>
+                        <button class="remove-btn" onclick="toggleCartItem(${item.id})">✕</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(div);
+            });
+
+            const totalElem = document.getElementById('cart-total-price');
+            if (totalElem) totalElem.innerText = total.toString();
         }
 
         function toggleCart() {
-            document.getElementById('cart-modal').classList.toggle('active');
-            document.getElementById('modal-overlay').classList.toggle('active');
+            const cartModal = document.getElementById('cart-modal');
+            const overlay = document.getElementById('modal-overlay');
+            if (cartModal && overlay) {
+                cartModal.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
         }
 
         function closeAllModals() {
-            document.getElementById('cart-modal').classList.remove('active');
-            document.getElementById('auth-modal').classList.remove('active');
-            document.getElementById('modal-overlay').classList.remove('active');
+            document.getElementById('cart-modal')?.classList.remove('active');
+            document.getElementById('alert-modal')?.classList.remove('active');
+            document.getElementById('modal-overlay')?.classList.remove('active');
         }
 
         function checkout() {
-            alert('Замовлення оформлено! Дякуємо.');
+            if (cart.length === 0) return;
+            const totalElem = document.getElementById('cart-total-price');
+            const sum = totalElem ? totalElem.innerText : '0';
+            
+            document.getElementById('alert-message').innerText = `Сума замовлення: ${sum} грн. Ми зв'яжемося з вами для підтвердження.`;
+            
+            document.getElementById('cart-modal')?.classList.remove('active');
+            document.getElementById('alert-modal')?.classList.add('active');
+            
             cart = [];
-            updateCart();
-            closeAllModals();
             renderProducts(allProducts);
+            updateCart();
         }
 
-        loadProducts();
+        function closeAlert() {
+            document.getElementById('alert-modal')?.classList.remove('active');
+            document.getElementById('modal-overlay')?.classList.remove('active');
+        }
+
+        window.toggleCartItem = toggleCartItem;
+        window.filterCategory = filterCategory;
+        window.filterProducts = filterProducts;
+        window.toggleCart = toggleCart;
+        window.closeAllModals = closeAllModals;
+        window.checkout = checkout;
+        window.closeAlert = closeAlert;
     </script>
 </body>
 </html>
