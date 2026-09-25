@@ -1,17 +1,26 @@
-let allProducts = [];
-let currentCategory = 'all';
-let cart = [];
-
-// Завантажуємо товари з твого products.json
-fetch('products.json')
-    .then((res) => res.json())
-    .then((data) => {
-        allProducts = data;
-        renderProducts(allProducts);
-    })
-    .catch(() => {
-        const container = document.getElementById('products-container');
-        if (container) {
-            container.innerHTML = `<p style="color: #555; text-align: center;">Помилка завантаження каталогу</p>`;
-        }
-    });
+[
+  {
+    "id": 1,
+    "name": "VentShop Silent 100 Pro",
+    "category": "Вентилятори",
+    "description": "Ультра-тихий безшумний витяжний вентилятор із захистом від вологи.",
+    "price": 1450,
+    "image": "https://via.placeholder.com/300x200/12161c/00ff88?text=Silent+100"
+  },
+  {
+    "id": 2,
+    "name": "Рекуператор SmartAir Eco",
+    "category": "Рекуператори",
+    "description": "Припливно-витяжна установка з керамічним теплообмінником.",
+    "price": 8900,
+    "image": "https://via.placeholder.com/300x200/12161c/00ff88?text=SmartAir+Eco"
+  },
+  {
+    "id": 3,
+    "name": "Канальний вентилятор V-Line 150",
+    "category": "Вентилятори",
+    "description": "Високонапірний вентилятор для розгалужених систем повітропроводів.",
+    "price": 2400,
+    "image": "https://via.placeholder.com/300x200/12161c/00ff88?text=V-Line+150"
+  }
+]
