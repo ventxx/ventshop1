@@ -3,26 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VentShop - Магазин</title>
+    <title>VentShop — Матернет найкращих товарів</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            text-align: center;
-            padding-top: 50px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        h1 {
+
+        body {
+            background-color: #0f1016;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(18, 19, 26, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffcc, #0077ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .cart-btn {
+            background: #00ffcc;
+            color: #0f1016;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: #00b38a;
+            transform: scale(1.05);
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, #1a1c29 0%, #0f1016 70%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #a0a0b0;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
             color: #00ffcc;
         }
-        p {
-            font-size: 18px;
-            color: #cccccc;
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: #181a26;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s ease;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: #00ffcc;
+            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .product-card .price {
+            font-size: 1.2rem;
+            color: #00ffcc;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-card button {
+            background: transparent;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .product-card button:hover {
+            background: #00ffcc;
+            color: #0f1016;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 50px;
+        }
+
+        /* Анімації */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(0,255,204,0.2); }
+            to { text-shadow: 0 0 20px rgba(0,255,204,0.6); }
         }
     </style>
 </head>
 <body>
-    <h1>Вітаємо у VentShop!</h1>
-    <p>Сайт успішно запущено на серверах Render.com в режимі 24/7!</p>
+
+    <header>
+        <div class="logo">VentShop</div>
+        <button class="cart-btn" onclick="alert('Кошик порожній')">Кошик (0)</button>
+    </header>
+
+    <section class="hero">
+        <h1>Ласкаво просимо у VentShop!</h1>
+        <p>Найсучасніші товари з миттєвою доставкою та гарантією якості.</p>
+        <button class="cart-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Переглянути каталог</button>
+    </section>
+
+    <div class="container" id="catalog">
+        <h2 class="section-title">Наші товари</h2>
+        <div class="products-grid">
+            
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=500&q=80" alt="Товар">
+                <h3>Ігровий девайс X</h3>
+                <div class="price">1 499 грн</div>
+                <button onclick="alert('Товар додано до кошика!')">Купити</button>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80" alt="Товар">
+                <h3>Навушники Pro Sound</h3>
+                <div class="price">2 299 грн</div>
+                <button onclick="alert('Товар додано до кошика!')">Купити</button>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=500&q=80" alt="Товар">
+                <h3>Студійний мікрофон</h3>
+                <div class="price">3 100 грн</div>
+                <button onclick="alert('Товар додано до кошика!')">Купити</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 VentShop. Усі права захищені.</p>
+    </footer>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VentShop — Матернет найкращих товарів</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f1016;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(18, 19, 26, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffcc, #0077ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .cart-btn {
+            background: #00ffcc;
+            color: #0f1016;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: #00b38a;
+            transform: scale(1.05);
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, #1a1c29 0%, #0f1016 70%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #a0a0b0;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #00ffcc;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: #181a26;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s ease;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: #00ffcc;
+            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .product-card .price {
+            font-size: 1.2rem;
+            color: #00ffcc;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-card button {
+            background: transparent;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .product-card button:hover {
+            background: #00ffcc;
+            color: #0f1016;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 50px;
+        }
+
+        /* Анімації */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(0,255,204,0.2); }
+            to { text-shadow: 0 0 20px rgba(0,255,204,0.6); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">VentShop</div>
+        <button class="cart-btn" onclick="alert('Кошик порожній')">Кошик (0)</button>
+    </header>
+
+    <section class="hero">
+        <h1>Ласкаво просимо у VentShop!</h1>
+        <p>Найсучасніші товари з миттєвою доставкою та гарантією якості.</p>
+        <button class="cart-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Переглянути каталог</button>
+    </section>
+
+    <div class="container" id="catalog">
+        <h2 class="section-title">Наші товари</h2>
+        <div class="products-grid">
+            
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=500&q=80" alt="Товар">
+                <h3>Ігровий девайс X</h3>
+                <div class="price">1 499 грн</div>
+                <button onclick="alert('Товар додано до кошика!')">Купити</button>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80" alt="Товар">
+                <h3>Навушники Pro Sound</h3>
+                <div class="price">2 299 грн</div>
+                <button onclick="alert('Товар додано до кошика!')">Купити</button>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=500&q=80" alt="Товар">
+                <h3>Студійний мікрофон</h3>
+                <div class="price">3 100 грн</div>
+                <button onclick="alert('Товар додано до кошика!')">Купити</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 VentShop. Усі права захищені.</p>
+    </footer>
+
 </body>
 </html>
