@@ -1,77 +1,557 @@
-/* Додаткові стилі для авторизації та Панелі Власника */
-
-.admin-panel {
-    background: #0d0d11;
-    border: 1px solid #282835;
-    border-radius: 20px;
-    padding: 24px;
-    margin-bottom: 40px;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.admin-panel h2 {
-    font-size: 16px;
-    letter-spacing: 2px;
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #050505;
+    color: #e1e1e6;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* ШАПКА В СТИЛІ DEVIALET */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1a1a1a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 4px;
     color: #ffffff;
+    text-transform: uppercase;
+}
+
+.logo span {
+    color: #666666;
+}
+
+.cart-btn-wrapper {
+    background: #111111;
+    border: 1px solid #222222;
+    padding: 8px 18px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cart-btn-wrapper:hover {
+    border-color: #ffffff;
+    background: #1a1a1a;
+}
+
+.cart-count {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+/* HERO SECTION */
+.hero {
+    position: relative;
+    padding: 60px 24px 40px;
+    text-align: center;
+    background: radial-gradient(circle at center, #141416 0%, #050505 80%);
+    border-bottom: 1px solid #141414;
+    overflow: hidden;
+}
+
+.hero-bg-graphic {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #2a2a30 0%, #0d0d0f 70%);
+    border: 1px solid #222226;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-bg-graphic::after {
+    content: '';
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #050505;
+    border: 1px solid #33333d;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    color: #777777;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     margin-bottom: 16px;
 }
 
-.admin-form {
+.hero h1 {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    line-height: 1.15;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.hero p {
+    color: #777777;
+    font-size: 13px;
+    max-width: 400px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #cccccc;
+    transform: translateY(-2px);
+}
+
+/* SECTION "ABOUT" */
+.about-section {
+    padding: 50px 24px;
+    border-bottom: 1px solid #141414;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.about-subtitle {
+    font-size: 11px;
+    color: #555555;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+}
+
+.about-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.about-card {
+    background: #0a0a0c;
+    border: 1px solid #16161a;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+}
+
+.about-card h3 {
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.about-card p {
+    font-size: 12px;
+    color: #666666;
+    line-height: 1.6;
+}
+
+/* ПОШУК ТА КАТЕГОРІЇ */
+.main-content {
+    padding: 40px 24px;
+}
+
+.controls-section {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.search-box input {
+    width: 100%;
+    background: #0a0a0c;
+    border: 1px solid #1c1c22;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #444444;
+}
+
+.categories {
+    display: flex;
+    gap: 10px;
+}
+
+.cat-btn {
+    flex: 1;
+    background: #0a0a0c;
+    border: 1px solid #1c1c22;
+    color: #666666;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cat-btn.active {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+}
+
+/* КАРТКИ ТОВАРІВ */
+.products-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-card {
+    background: #0a0a0c;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #18181c;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.product-card:hover {
+    border-color: #2a2a32;
+}
+
+.product-placeholder {
+    width: 100%;
+    height: 160px;
+    border-radius: 12px;
+    background: radial-gradient(circle at center, #1a1a20 0%, #070709 100%);
+    border: 1px solid #16161a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-shape {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #282830;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-shape::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #121216;
+    border: 1px solid #3a3a45;
+}
+
+.product-info h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.product-desc {
+    font-size: 12px;
+    color: #666666;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.product-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #141416;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.price span {
+    font-size: 11px;
+    color: #555555;
+    font-weight: 500;
+}
+
+/* ІНТЕРАКТИВНА КНОПКА «ОБРАТИ» / «В КОШИКУ» */
+.btn-buy {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-buy:active {
+    transform: scale(0.92);
+}
+
+/* Стан, коли товар ВЖЕ В КОШИКУ */
+.btn-buy.added {
+    background: #121216;
+    color: #888888;
+    border-color: #22222a;
+}
+
+.btn-buy.added:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+}
+
+/* МОДАЛКИ ТА ОВЕРЛЕЙ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.cart-modal {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background: #0a0a0c;
+    border-top: 1px solid #222228;
+    border-radius: 24px 24px 0 0;
+    padding: 24px;
+    z-index: 200;
+    transition: bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-modal.active {
+    bottom: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cart-header h3 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.close-cart {
+    background: none;
+    border: none;
+    color: #666666;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.cart-items {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.admin-input {
-    background: #050505;
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111114;
     border: 1px solid #1c1c22;
     padding: 12px 16px;
-    border-radius: 10px;
-    color: #ffffff;
+    border-radius: 12px;
     font-size: 13px;
-    outline: none;
+    color: #ffffff;
 }
 
-.admin-input:focus {
-    border-color: #555;
-}
-
-.edit-price-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-}
-
-.edit-price-input {
-    width: 90px;
-    background: #111;
-    border: 1px solid #333;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-}
-
-.btn-sm {
-    background: #222;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 6px 12px;
-    border-radius: 6px;
+.remove-btn {
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 16px;
     cursor: pointer;
-    font-size: 11px;
 }
 
-.btn-sm:hover {
+.cart-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cart-total {
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: right;
+    color: #666666;
+}
+
+.cart-total span {
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.btn-checkout {
     background: #ffffff;
     color: #000000;
+    border: none;
+    padding: 16px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
 }
 
-.auth-badge {
-    font-size: 11px;
-    color: #888;
-    background: #111;
-    padding: 6px 14px;
+.alert-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: #0a0a0c;
+    border: 1px solid #222228;
+    padding: 28px 24px;
     border-radius: 20px;
-    border: 1px solid #222;
+    z-index: 300;
+    width: 85%;
+    max-width: 360px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.alert-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.alert-modal h4 {
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.alert-modal p {
+    font-size: 13px;
+    color: #666666;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.btn-alert-close {
+    width: 100%;
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid #141414;
+    color: #444444;
+    font-size: 11px;
+    letter-spacing: 1px;
 }
