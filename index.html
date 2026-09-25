@@ -3,75 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VentShop</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #0b0c10;
-            color: #c5c6c7;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .card {
-            background: #1f2833;
-            border: 1px solid rgba(0, 255, 204, 0.2);
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 100%;
-            animation: fadeIn 1.2s ease-in-out;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            color: #ffffff;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        h1 span {
-            color: #66fcf1;
-            text-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: #8892b0;
-            line-height: 1.6;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    <title>VENTSHOP — High-End Ventilation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="card">
-        <h1>Вітаємо у <span>VentShop</span>!</h1>
-        <p>Сайт успішно запущено на серверах Render.com в режимі 24/7!</p>
+    <header class="header">
+        <div class="logo">VENT<span>SHOP</span></div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="user-info" class="auth-badge">Гість</div>
+            <button class="btn-sm" id="auth-btn" onclick="openAuthModal()">Вхід</button>
+            <div class="cart-btn-wrapper" onclick="toggleCart()">
+                <span style="font-size: 12px;">КОШИК</span>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg-graphic"></div>
+        <div class="hero-badge">ELEVATE THE AIR</div>
+        <h1>VENTSHOP</h1>
+        <p>Преміальні кліматичні системи безкомпромісної якості.</p>
+    </section>
+
+    <main class="main-content">
+
+        <!-- Панель Адміністратора / Власника (показується тільки якщо role === 'admin') -->
+        <section id="admin-section" class="admin-panel" style="display: none;">
+            <h2>⚡ ПАНЕЛЬ ВЛАСНИКА: Додати нове оголошення</h2>
+            <form class="admin-form" onsubmit="handleAddProduct(event)">
+                <input type="text" id="new-name" class="admin-input" placeholder="Назва моделі" required>
+                <input type="text" id="new-category" class="admin-input" placeholder="Категорія (Вентилятори / Рекуператори)" required>
+                <input type="number" id="new-price" class="admin-input" placeholder="Ціна (грн)" required>
+                <textarea id="new-desc" class="admin-input" placeholder="Опис товару" rows="2"></textarea>
+                <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Опублікувати товар</button>
+            </form>
+        </section>
+
+        <section class="controls-section">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Пошук по моделям..." oninput="filterProducts()">
+            </div>
+            <div class="categories">
+                <button class="cat-btn active" onclick="filterCategory('all', this)">Все</button>
+                <button class="cat-btn" onclick="filterCategory('Вентилятори', this)">Вентилятори</button>
+                <button class="cat-btn" onclick="filterCategory('Рекуператори', this)">Рекуператори</button>
+            </div>
+        </section>
+
+        <section class="catalog">
+            <div class="products-grid" id="products-container"></div>
+        </section>
+    </main>
+
+    <!-- Модалка Авторизації / Реєстрації -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeAllModals()"></div>
+
+    <div class="cart-modal" id="auth-modal" style="max-width: 400px; margin: 0 auto;">
+        <div class="cart-header">
+            <h3>Авторизація</h3>
+            <button class="close-cart" onclick="closeAllModals()">✕</button>
+        </div>
+        <form onsubmit="handleAuth(event)" style="display: flex; flex-direction: column; gap: 14px;">
+            <input type="text" id="auth-user" class="admin-input" placeholder="Логін (напр. admin)" required>
+            <input type="password" id="auth-pass" class="admin-input" placeholder="Пароль (напр. adminpassword)" required>
+            <button type="submit" class="btn-checkout">Увійти / Зареєструватись</button>
+        </form>
+        <p style="font-size: 11px; color: #555; margin-top: 15px; text-align: center;">
+            💡 Логін власника: <b>admin</b> | Пароль: <b>adminpassword</b>
+        </p>
     </div>
 
+    <!-- Модалка Кошика -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Ваш кошик</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">Разом: <span id="cart-total-price">0</span> грн</div>
+            <button class="btn-checkout" onclick="checkout()">Оформити замовлення</button>
+        </div>
+    </div>
+
+    <script>
+        let allProducts = [];
+        let cart = [];
+        let currentUser = null;
+        let currentCategory = 'all';
+
+        // Завантаження товарів із сервера
+        async function loadProducts() {
+            const res = await fetch('/api/products');
+            allProducts = await res.json();
+            renderProducts(allProducts);
+        }
+
+        function renderProducts(productsList) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+
+            productsList.forEach(product => {
+                const isAdded = cart.some(item => item.id === product.id);
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                // Якщо залогинені як admin — показуємо форму зміни ціни та кнопка видалення
+                const adminControls = currentUser?.role === 'admin' ? `
+                    <div class="edit-price-box">
+                        <input type="number" class="edit-price-input" id="price-input-${product.id}" value="${product.price}">
+                        <button class="btn-sm" onclick="updatePrice(${product.id})">Зберегти ціну</button>
+                        <button class="btn-sm" style="color: #ff4444;" onclick="deleteProduct(${product.id})">✕</button>
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    <div class="product-placeholder"><div class="placeholder-shape"></div></div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-desc">${product.description}</p>
+                        ${adminControls}
+                        <div class="product-bottom">
+                            <span class="price">${product.price} <span>ГРН</span></span>
+                            <button class="btn-buy ${isAdded ? 'added' : ''}" onclick="toggleCartItem(${product.id})">
+                                ${isAdded ? 'В кошику ✓' : 'Обрати'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Авторизація
+        async function handleAuth(e) {
+            e.preventDefault();
+            const username = document.getElementById('auth-user').value;
+            const password = document.getElementById('auth-pass').value;
+
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                currentUser = data.user;
+                document.getElementById('user-info').innerText = `${currentUser.username} (${currentUser.role})`;
+                document.getElementById('auth-btn').innerText = 'Вихід';
+                document.getElementById('auth-btn').onclick = logout;
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('admin-section').style.display = 'block';
+                }
+                closeAllModals();
+                renderProducts(allProducts);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('user-info').innerText = 'Гість';
+            document.getElementById('auth-btn').innerText = 'Вхід';
+            document.getElementById('auth-btn').onclick = openAuthModal;
+            document.getElementById('admin-section').style.display = 'none';
+            renderProducts(allProducts);
+        }
+
+        // Додавання оголошення (Власник)
+        async function handleAddProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-name').value;
+            const category = document.getElementById('new-category').value;
+            const price = document.getElementById('new-price').value;
+            const description = document.getElementById('new-desc').value;
+
+            const res = await fetch('/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, category, price, description })
+            });
+
+            if (res.ok) {
+                e.target.reset();
+                await loadProducts();
+            }
+        }
+
+        // Зміна ціни (Власник)
+        async function updatePrice(id) {
+            const newPrice = document.getElementById(`price-input-${id}`).value;
+            await fetch(`/api/products/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ price: newPrice })
+            });
+            await loadProducts();
+        }
+
+        // Видалення товару (Власник)
+        async function deleteProduct(id) {
+            await fetch(`/api/products/${id}`, { method: 'DELETE' });
+            await loadProducts();
+        }
+
+        function toggleCartItem(id) {
+            const item = allProducts.find(p => p.id === id);
+            const idx = cart.findIndex(p => p.id === id);
+            if (idx > -1) cart.splice(idx, 1);
+            else cart.push(item);
+            updateCart();
+            renderProducts(allProducts);
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color:#555; text-align:center;">Кошик порожній</p>';
+                document.getElementById('cart-total-price').innerText = '0';
+                return;
+            }
+            container.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                container.innerHTML += `<div class="cart-item"><span>${item.name}</span><b>${item.price} грн</b></div>`;
+            });
+            document.getElementById('cart-total-price').innerText = total;
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('active');
+            document.getElementById('modal-overlay').classList.toggle('active');
+        }
+
+        function closeAllModals() {
+            document.getElementById('cart-modal').classList.remove('active');
+            document.getElementById('auth-modal').classList.remove('active');
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        function checkout() {
+            alert('Замовлення оформлено! Дякуємо.');
+            cart = [];
+            updateCart();
+            closeAllModals();
+            renderProducts(allProducts);
+        }
+
+        loadProducts();
+    </script>
 </body>
 </html>
