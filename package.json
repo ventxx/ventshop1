@@ -1,16 +1,12 @@
-[
-    {
-        "id": 1,
-        "name": "VentShop Silent 100 Pro",
-        "category": "Вентилятори",
-        "price": 1450,
-        "description": "Ультра-тихий безшумний витяжний вентилятор із захистом від вологи."
-    },
-    {
-        "id": 2,
-        "name": "Рекуператор SmartAir Eco",
-        "category": "Рекуператори",
-        "price": 4200,
-        "description": "Припливно-витяжна установка з керамічним теплообмінником."
-    }
-]
+{
+  "name": "ventshop1",
+  "version": "1.0.0",
+  "description": "VentShop web application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
